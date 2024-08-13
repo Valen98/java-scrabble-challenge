@@ -5,27 +5,80 @@ import java.util.HashMap;
 
 public class Scrabble {
     int scoreHolder = 0;
+    int wordMultiplier = 1;
     public Scrabble(String word) {
         HashMap<Character, Integer> scoreList = scoreList();
+        char[] charArray = word.toUpperCase().toCharArray();
+        ArrayList<Character> characterArrayList = new ArrayList<>();
+        for (char c : charArray) {
+            if(scoreList.containsKey(c)){
+                characterArrayList.add(c);
+            }else break;
+        }
 
+            System.out.println(characterArrayList);
+            characterArrayList = checkDoubleTripleWord(characterArrayList);
+            this.scoreHolder += checkDoubleTripleLetter(characterArrayList);
+            System.out.println(this.scoreHolder);
 
-        for (char c: word.toUpperCase().toCharArray()) {
+    }
+ /*
+  for (char c: word.toUpperCase().toCharArray()) {
             if(scoreList.containsKey(c)) {
                 this.scoreHolder += scoreList.get(c);
             }
-            //charArray.add(c);
-
         }
-
-
-
-    }
-
+  */
     public int score() {
-        return this.scoreHolder;
+        return this.scoreHolder * this.wordMultiplier;
     }
 
 
+    public ArrayList<Character> checkDoubleTripleWord(ArrayList<Character> list) {
+        if(!list.isEmpty()) {
+            if (list.getFirst().equals('[') && list.getLast().equals(']')) {
+                list.removeFirst();
+                list.removeLast();
+                this.wordMultiplier = 3;
+                return list;
+            } else if (list.getFirst().equals('{') && list.getLast().equals('}')) {
+                list.removeFirst();
+                list.removeLast();
+                this.wordMultiplier = 2;
+                return list;
+            }
+        }
+        return list;
+    }
+
+    public int checkDoubleTripleLetter(ArrayList<Character> list) {
+        int charScore = 0;
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).equals('[') && list.get(i + 2).equals(']')) {
+                    if (list.contains(list.get(i + 1))) {
+                        charScore += scoreList().get(list.get(i + 1)) * 3;
+                        i += 2;
+                    }
+                } else if (list.get(i).equals('{') && list.get(i + 2).equals('}')) {
+                    if (list.contains(list.get(i + 1))) {
+                        charScore += scoreList().get(list.get(i + 1)) * 2;
+                        i += 2;
+                    }
+                } else {
+                    if (list.get(i).equals('[') || list.get(i).equals(']') || list.get(i).equals('{') || list.get(i).equals('}')) {
+                        //Set to 0 if the brackets are wrong
+                        charScore = 0;
+                        this.scoreHolder = 0;
+                        break;
+                    } else {
+                        charScore += scoreList().get(list.get(i));
+                    }
+                }
+            }
+        }
+        return charScore;
+    }
 
 
     public HashMap<Character, Integer> scoreList() {
@@ -56,6 +109,10 @@ public class Scrabble {
         list.put('X', 8);
         list.put('Q', 10);
         list.put('Z', 10);
+        list.put('[', 0);
+        list.put(']', 0);
+        list.put('{', 0);
+        list.put('}', 0);
 
         return list;
     }
