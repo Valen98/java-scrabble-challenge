@@ -16,11 +16,8 @@ public class Scrabble {
             }else break;
         }
 
-            System.out.println(characterArrayList);
-            characterArrayList = checkDoubleTripleWord(characterArrayList);
-            this.scoreHolder += checkDoubleTripleLetter(characterArrayList);
-            System.out.println(this.scoreHolder);
-
+        characterArrayList = checkDoubleTripleWord(characterArrayList);
+        this.scoreHolder += checkDoubleTripleLetter(characterArrayList);
     }
  /*
   for (char c: word.toUpperCase().toCharArray()) {
