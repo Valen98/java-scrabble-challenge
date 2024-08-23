@@ -2,11 +2,11 @@ package com.booleanuk;
 
 import java.util.HashMap;
 
-public class Scrabble {
+public class NewScrabble {
     private HashMap<Character, Integer> alphabet;
     private String word;
 
-    public Scrabble(String word) {
+    public NewScrabble(String word) {
         this.word = word.toUpperCase();
         scoreList();
     }
@@ -17,12 +17,13 @@ public class Scrabble {
             //Start with checking double letterScore
             if(word.charAt(i) == '{' ) {
                 if(word.charAt(i+2) == '}') {
-                    Scrabble scrabble = new Scrabble(word.substring(i+1, i+2));
+                    NewScrabble scrabble = new NewScrabble(word.substring(i+1, i+2));
                     score += scrabble.score() * 2;
                     i += 2;
                 }else if (word.charAt(word.length()-1) == '}') {
                     //It did not find a double letter, checks for double word.
-                    Scrabble scrabble = new Scrabble(word.substring(i+1, word.length()-1));
+                    System.out.println(i);
+                    NewScrabble scrabble = new NewScrabble(word.substring(i+1, word.length()-1));
                     System.out.println("Substring = " + word.substring(i+1, word.length()-1));
                     return scrabble.score() * 2;
 
@@ -32,22 +33,22 @@ public class Scrabble {
             } else if(word.charAt(i) == '[' ) {
                 //Check if it's a triple letter
                 if(word.charAt(i+2) == ']') {
-                    Scrabble scrabble = new Scrabble(word.substring(i+1, i+2));
+                    NewScrabble scrabble = new NewScrabble(word.substring(i+1, i+2));
                     score += scrabble.score() * 3;
                     i += 2;
                 }else if (word.charAt(word.length()-1) == ']') {
                     //This is a triple word
                     /*
-                    For instance if [DOG] is the word it will go into here because of word.charAt(0) == [ and 
+                    For instance if [DOG] is the word it will go into here because of word.charAt(0) == [ and
                     word.charAt(word.length())-1) == ]. The reason of word.length() - 1 is because an list starts from 0
-                    and the size will always be 1 more. When it finds ] it will then call itself again but with the 
-                    substring DOG because it will take current character which i=[, and take substring of i+1 which is D 
+                    and the size will always be 1 more. When it finds ] it will then call itself again but with the
+                    substring DOG because it will take current character which i=[, and take substring of i+1 which is D
                     and word.length-1 is = ]. So the remainder of the word is now DOG.
-                    Because of it being checking the rest of the word for double or triple letter of the remainder,  
+                    Because of it being checking the rest of the word for double or triple letter of the remainder,
                     and therefore it returns the letter score * the word multiplier.
                     This is a recursive method by calling itself and Big O notation is O(N).
                      */
-                    Scrabble scrabble = new Scrabble(word.substring(i + 1, word.length() - 1));
+                    NewScrabble scrabble = new NewScrabble(word.substring(i + 1, word.length() - 1));
                     return scrabble.score() * 3;
                 }
                 else {
@@ -57,6 +58,8 @@ public class Scrabble {
                 if(alphabet.containsKey(word.charAt(i))) {
                     score += alphabet.get(word.charAt(i));
                 }else {
+                    System.out.println(word);
+                    System.out.println("IF character does not exist");
                     return 0;
                 }
             }
